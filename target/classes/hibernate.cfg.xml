@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+ 
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+
+	<session-factory>
+
+		<property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+		<property name="connection.url">jdbc:mysql://localhost/EstanciasHibernate?serverTimezone=UTC</property>
+		
+		<property name="connection.pool_size">1</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password"></property>
+		
+		
+		<property name="dialect">org.hibernate.dialect.MySQL5Dialect</property>
+
+		<property name="show_sql">true</property>
+		
+		<property name="hbm2ddl.auto">update</property>
+		
+		<mapping class="clases.Estancia" />
+		<mapping class="clases.Estudiante" />
+		<mapping class="clases.Residencia" />
+		<mapping class="clases.ResidenciasObservacion" />
+		<mapping class="clases.Universidad" />
+		
+	</session-factory>
+	
+</hibernate-configuration> 
