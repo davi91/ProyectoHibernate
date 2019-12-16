@@ -31,4 +31,9 @@ public class Universidad {
 	public void setNomUniversidad(String nomUniversidad) {
 		this.nomUniversidad = nomUniversidad;
 	}
+	
+	@Override
+	public String toString() {
+		return nomUniversidad;
+	}
 }

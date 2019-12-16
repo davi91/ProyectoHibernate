@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.scene.control.cell.CheckBoxTableCell?>
 
 <GridPane fx:id="view" hgap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" vgap="5.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
    <rowConstraints>
@@ -33,10 +34,27 @@
 					<PropertyValueFactory property="nomResidencia" />
 				</cellValueFactory>
                 </TableColumn>
-                  <TableColumn prefWidth="108.0" text="Universidad" />
-                  <TableColumn prefWidth="187.0" text="observacion" />
-                  <TableColumn prefWidth="98.0" text="Precio" />
-                  <TableColumn minWidth="0.0" prefWidth="101.0" text="Comedor" />
+                  <TableColumn prefWidth="108.0" text="Universidad" >
+                    <cellValueFactory>
+						<PropertyValueFactory property="universidad" />
+					</cellValueFactory>
+                  </TableColumn>
+                  <TableColumn prefWidth="187.0" text="observacion" >
+                  <cellValueFactory>
+					<PropertyValueFactory property="observacion" />
+				 </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn prefWidth="98.0" text="Precio" >
+                   <cellValueFactory>
+					<PropertyValueFactory property="precioMensual" />
+			   	 </cellValueFactory>
+                  </TableColumn>
+                  <TableColumn fx:id="comedorCol" minWidth="0.0" prefWidth="101.0" text="Comedor" >   
+          		 <cellValueFactory>
+					<PropertyValueFactory property="comedor" />
+			   	 </cellValueFactory>
+     			 
+                  </TableColumn>
               </columns>
             </TableView>
          </children>

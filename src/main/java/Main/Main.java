@@ -44,21 +44,10 @@ public class Main {
 		
 		// Importamos la universidad
 
-		Query uniQuery = session.createQuery("from Residencia as resi");
-		
-		
-		Residencia resi = (Residencia) uniQuery.getSingleResult();
-		
-		if( resi != null ) {
-			System.out.println("Nombre de la resi: " + resi.getNomResidencia());
-			System.out.println("Observación: " + resi.getObservacion());
-		}
-		
-		transaction.commit(); // La cerramos
-		session.close();  // Hemos terminado
+
 		
 		// Ahora, una vez creada la base de datos, procedemos a la interfaz
-	//	App.main(args);
+		App.main(args);
 	}
 
 }

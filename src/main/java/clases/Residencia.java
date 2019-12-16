@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -18,12 +17,15 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import utils.HQLManager;
 
 @Entity
 @Table(name="residencias")
@@ -48,19 +50,46 @@ public class Residencia implements Externalizable {
 	private int _precioMensual;
 	private IntegerProperty precioMensual;
 	
-	private int _comedor;
-	private IntegerProperty comedor;
+	private boolean _comedor;
+	private BooleanProperty comedor;
 
-	public final IntegerProperty comedorProperty() {
+	public Residencia() {
+		
+	}
+	
+	public Residencia(String nombre, int precio, boolean comedor, String observacion, Universidad universidad) {
+	
+		setNomResidencia(nombre);
+		setPrecioMensual(precio);
+		setComedor(comedor);
+		setUniversidad(universidad);
+		
+		ResidenciasObservacion obObj = null;
+		// Ahora necesitamos asociarla a una universidad y a una observación( si la hay )
+		if( observacion != null ) {
+			
+			obObj = new ResidenciasObservacion(observacion);
+			obObj.setCodFResindecia(this); // Enlazamos con esta residencia
+			setObservacion(obObj);
+		}
+		
+		// Primero insertamos la residencia y luego la observacion
+		HQLManager.insertResidencia(this);
+		
+		if( obObj != null )
+			HQLManager.insertObservacion(obObj);
+	}
+	
+	public final BooleanProperty comedorProperty() {
 		
 		if( this.comedor == null ) {
-			this.comedor = new SimpleIntegerProperty(this, "comedor", _comedor);
+			this.comedor = new SimpleBooleanProperty(this, "comedor", _comedor);
 		}
 		
 		return this.comedor;
 	}
 	
-	public final void setComedor(int comedor) {
+	public final void setComedor(boolean comedor) {
 		
 		if( this.comedor == null ) {
 			_comedor = comedor;
@@ -69,8 +98,8 @@ public class Residencia implements Externalizable {
 		}
 	}
 	
-	@Column(columnDefinition = "tinyint(1)")
-	public final int getComedor() {
+	@Column
+	public final boolean getComedor() {
 		
 		if( this.comedor == null ) {
 			return _comedor;
@@ -122,7 +151,7 @@ public class Residencia implements Externalizable {
 	}
 	
 
-	@ManyToOne(fetch = FetchType.EAGER)
+	@ManyToOne(fetch = FetchType.EAGER) // Me interesa obtener la universidad asociada, puesto que la necesitamos en la tabla
 	@JoinColumn(name="codUniversidad")
 	public final Universidad getUniversidad() {
 		
@@ -156,7 +185,7 @@ public class Residencia implements Externalizable {
 	}
 	
 
-	@OneToOne(cascade = {CascadeType.PERSIST})
+	@OneToOne
 	@PrimaryKeyJoinColumn
 	public final ResidenciasObservacion getObservacion() {
 		
@@ -252,7 +281,7 @@ public class Residencia implements Externalizable {
 	public void writeExternal(ObjectOutput out) throws IOException {
 		
 		out.writeInt(getCodResidencia());
-		out.writeInt(getComedor());
+		out.writeBoolean(getComedor());
 		out.writeInt(getPrecioMensual());
 		out.writeObject(getNomResidencia());
 		out.writeObject(getObservacion());
@@ -263,7 +292,7 @@ public class Residencia implements Externalizable {
 	public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
 		
 		setCodResidencia(in.readInt());
-		setComedor(in.readInt());
+		setComedor(in.readBoolean());
 		setPrecioMensual(in.readInt());
 		setNomResidencia((String)in.readObject());
 		setObservacion((ResidenciasObservacion)in.readObject());

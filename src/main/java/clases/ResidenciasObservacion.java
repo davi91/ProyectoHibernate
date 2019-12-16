@@ -46,7 +46,15 @@ public class ResidenciasObservacion implements Externalizable {
 		observaciones.setValue((String)in.readObject());
 		codResidencia.setValue(in.readInt());
 	}
+	
+	public ResidenciasObservacion() {
+		
+	}
 
+	public ResidenciasObservacion(String observacion) {
+		setObservaciones(observacion);
+	}
+	
 	public final ObjectProperty<Residencia> codFResindeciaProperty() {
 		
 		if( codFResindecia == null ) {
