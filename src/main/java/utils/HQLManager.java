@@ -65,6 +65,32 @@ public class HQLManager {
 		session.close();	
 	}
 	
+	public static void removeResidencia(Residencia residencia) {
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		Transaction transaction = session.beginTransaction();
+		
+		session.delete(residencia);
+		
+		transaction.commit();
+		session.close();
+	}
+	
+	public static void updateResidencia(Residencia residencia) {
+	
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		Transaction transaction = session.beginTransaction();
+		
+		//Query updateQuery = session.createQuery("update Residencia set nombrewhere codResidencia = ?");
+		//updateQuery.setParameter(1, residencia.getCodResidencia());
+		session.saveOrUpdate(residencia);
+		transaction.commit();
+		session.close();
+		
+	}
+	
 	public static void insertObservacion(ResidenciasObservacion observacion) {
 		
 		Session session = HibernateUtil.getSessionFactory().openSession();

@@ -15,10 +15,10 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// Creamos la base de datos
-		Session session = HibernateUtil.getSessionFactory().openSession();
+	//	Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		// Abrimos la transacción
-		Transaction transaction = session.beginTransaction();
+	//	Transaction transaction = session.beginTransaction();
 		
 		/*
 		Universidad uni = new Universidad();
@@ -44,7 +44,7 @@ public class Main {
 		
 		// Importamos la universidad
 
-
+	//	session.close();
 		
 		// Ahora, una vez creada la base de datos, procedemos a la interfaz
 		App.main(args);
