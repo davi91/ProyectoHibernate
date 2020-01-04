@@ -18,6 +18,15 @@ import ui.ResidenciasController;
 
 public class InsertResiDialog extends Dialog<Residencia> {
 
+	private Residencia resiToUpdate = null;
+	
+	private static final String insertText = "Insertar";
+	private static final String updateText = "Actualizar";
+	private static final String insertHeader = "Insertar nueva residencia";
+	private static final String updateHeader = "Actualizar residencia";
+	private static final String insertTtitle = "Insertar residencia";
+	private static final String updateTitle =  "Actualizar residencia";
+	
 	public class ResiDialogValidation extends BooleanBinding {
 
 		// Ponemos los campos obligatorios
@@ -50,27 +59,47 @@ public class InsertResiDialog extends Dialog<Residencia> {
 		protected boolean computeValue() {
 			
 			if( nombre.get() == null || universidad.get() == null || precio.get() == null ) {
-				return false;
+				return true;
 			}
 			
 			if( nombre.get().isEmpty() || !checkPrecioString() ) {
-				return false;
+				return true;
 			}
 
-			return true;
+			return false;
 		}
 		
 		
 	}
 	
+	/**
+	 * Por defecto se inserta una nueva residencia, no se actualiza
+	 */
 	public InsertResiDialog() {
-		this(null, null, "0", false, null);
+		this(false, null, null, "0", false, null);
 	}
 	
-	public InsertResiDialog(String nombreResi, Universidad universidadObj, String precioResi, boolean comedorResi, String observacionTxt) {
+	/**
+	 * Actualización de una residencia
+	 * @param toUpdate Reisdencia a actualizar
+	 */
+	public InsertResiDialog(Residencia toUpdate) {
+		this(true, toUpdate.getNomResidencia(), toUpdate.getUniversidad(),
+				   String.valueOf(toUpdate.getPrecioMensual()), toUpdate.getComedor(), 
+				   toUpdate.getObservacion() != null ? toUpdate.getObservacion().toString() : null);
 		
-		setTitle("Insertar residencia");
-		setHeaderText("Datos de la residencia a insertar");
+		this.resiToUpdate = toUpdate;
+	}
+	
+	public InsertResiDialog(boolean bUpdate, String nombreResi, Universidad universidadObj, String precioResi, boolean comedorResi, String observacionTxt) {
+		
+		if( !bUpdate ) {
+			setTitle(insertTtitle);
+			setHeaderText(insertHeader);
+		} else {
+			setTitle(updateTitle);
+			setHeaderText(updateHeader);
+		}
 		
 		GridPane root = new GridPane();
 		root.setHgap(5);
@@ -107,7 +136,7 @@ public class InsertResiDialog extends Dialog<Residencia> {
 		
 		Label observacionLbl = new Label("Observacion:");
 		TextArea observacion = new TextArea();
-		observacion.setPromptText("Observacion");
+		observacion.setPromptText("Observacion: Campo opcional");
 		if( observacionTxt != null ) {
 			observacion.setText(observacionTxt);
 		}
@@ -116,20 +145,34 @@ public class InsertResiDialog extends Dialog<Residencia> {
 		
 		getDialogPane().setContent(root);
 		
-		ButtonType okButton = new ButtonType("Insertar", ButtonData.OK_DONE);
+		ButtonType okButton = new ButtonType(!bUpdate ? insertText : updateText, ButtonData.OK_DONE);
 		ButtonType cancelButton = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
 		
 		getDialogPane().getButtonTypes().addAll(okButton, cancelButton);
 		getDialogPane().lookupButton(okButton).disableProperty().bind(new ResiDialogValidation(nombre.textProperty(),
 																universidades.getSelectionModel().selectedItemProperty(),
-																precio.textProperty()).not());
+																precio.textProperty()));
 		setResultConverter( bt -> {
 			
 			if( bt == okButton ) {
 				
-				Residencia resi = new Residencia(nombre.getText(), Integer.parseInt(precio.getText()), comedor.isSelected(),
-											    observacion.getText(), universidades.getSelectionModel().getSelectedItem());
-				return resi;
+				if( !bUpdate ) {
+					
+					Residencia resi = new Residencia(nombre.getText(), Integer.parseInt(precio.getText()),
+							comedor.isSelected(), observacion.getText().isBlank() ? null : observacion.getText(),
+							universidades.getSelectionModel().getSelectedItem());
+					
+					return resi;
+					
+				} else {
+					
+					// Actualizamos con nuevos datos
+					resiToUpdate.updateResidencia(nombre.getText(), Integer.parseInt(precio.getText()),
+							comedor.isSelected(), observacion.getText(),
+							universidades.getSelectionModel().getSelectedItem());
+					
+					return resiToUpdate;
+				}
 			}
 			
 			return null;

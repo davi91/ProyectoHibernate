@@ -7,9 +7,25 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import utils.HQLManager;
+
 @Entity
 @Table(name="estudiantes")
 public class Estudiante {
+
+	public Estudiante() {
+		
+	}
+	
+
+	public Estudiante(String dni, String nomEstudiante, String telefonoEstudiante) {
+		setDni(dni);
+		setNomEstudiante(nomEstudiante);
+		setTelefonoEstudiante(telefonoEstudiante);
+		
+		HQLManager.insertEstudiante(this);
+	}
+
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,5 +70,10 @@ public class Estudiante {
 
 	public void setTelefonoEstudiante(String telefonoEstudiante) {
 		this.telefonoEstudiante = telefonoEstudiante;
+	}
+	
+	@Override
+	public String toString() {
+		return dni;
 	}
 }

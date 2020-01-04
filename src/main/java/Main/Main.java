@@ -44,6 +44,7 @@ public class Main {
 		
 		// Importamos la universidad
 
+//		transaction.commit();
 	//	session.close();
 		
 		// Ahora, una vez creada la base de datos, procedemos a la interfaz

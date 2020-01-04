@@ -5,14 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.scene.control.cell.CheckBoxTableCell?>
 
-<GridPane fx:id="view" hgap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" vgap="5.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/11.0.1">
+<GridPane fx:id="view" hgap="5.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <rowConstraints>
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="ALWAYS" />
       <RowConstraints minHeight="10.0" prefHeight="30.0" />
@@ -29,27 +28,27 @@
             <Label text="Residencias" />
             <TableView fx:id="residenciaTable" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
-                <TableColumn prefWidth="125.0" text="Nombre" >
+                <TableColumn prefWidth="125.0" text="Nombre">
                  <cellValueFactory>
 					<PropertyValueFactory property="nomResidencia" />
 				</cellValueFactory>
                 </TableColumn>
-                  <TableColumn prefWidth="108.0" text="Universidad" >
+                  <TableColumn prefWidth="108.0" text="Universidad">
                     <cellValueFactory>
 						<PropertyValueFactory property="universidad" />
 					</cellValueFactory>
                   </TableColumn>
-                  <TableColumn prefWidth="187.0" text="observacion" >
+                  <TableColumn prefWidth="187.0" text="observacion">
                   <cellValueFactory>
 					<PropertyValueFactory property="observacion" />
 				 </cellValueFactory>
                   </TableColumn>
-                  <TableColumn prefWidth="98.0" text="Precio" >
+                  <TableColumn prefWidth="98.0" text="Precio">
                    <cellValueFactory>
 					<PropertyValueFactory property="precioMensual" />
 			   	 </cellValueFactory>
                   </TableColumn>
-                  <TableColumn fx:id="comedorCol" minWidth="0.0" prefWidth="101.0" text="Comedor" >   
+                  <TableColumn fx:id="comedorCol" minWidth="0.0" prefWidth="101.0" text="Comedor">   
           		 <cellValueFactory>
 					<PropertyValueFactory property="comedor" />
 			   	 </cellValueFactory>
@@ -60,7 +59,7 @@
          </children>
       </VBox>
       <Button fx:id="insertBt" mnemonicParsing="false" text="Insercciones" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
-      <Button fx:id="advancedBt" layoutX="134.0" layoutY="383.0" mnemonicParsing="false" text="Opciones avanzadas" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
+      <Button fx:id="estanciasBt" layoutX="134.0" layoutY="383.0" mnemonicParsing="false" text="Estancias" GridPane.halignment="CENTER" GridPane.rowIndex="3" />
       <Button fx:id="insertResiBt" layoutX="112.0" layoutY="453.0" mnemonicParsing="false" text="Insertar residencia" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
       <Button fx:id="modifyResiBt" layoutX="333.0" layoutY="383.0" mnemonicParsing="false" text="Modificar residencia" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
       <Button fx:id="removeResiBt" layoutX="333.0" layoutY="418.0" mnemonicParsing="false" text="Eliminar residencia" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="3" />

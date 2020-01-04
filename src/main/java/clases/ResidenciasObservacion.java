@@ -66,7 +66,7 @@ public class ResidenciasObservacion implements Externalizable {
 	
 
 	private Residencia _codFResindecia;
-	@OneToOne(cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
+	@OneToOne
 	@PrimaryKeyJoinColumn
 	public final Residencia getCodFResindecia() {
 		

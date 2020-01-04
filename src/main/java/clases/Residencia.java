@@ -58,27 +58,52 @@ public class Residencia implements Externalizable {
 		
 	}
 	
+	public void updateResidencia(String nombre, int precio, boolean comedor, String observacion, Universidad universidad) {
+		
+		setNomResidencia(nombre);
+		setPrecioMensual(precio);
+		setComedor(comedor);
+		setUniversidad(universidad);
+		
+		if( getObservacion() != null ) {
+			getObservacion().setObservaciones(observacion);
+			HQLManager.updateObservacion(getObservacion());
+			
+		} else {
+			
+			// Podría pasar que añadimos una nueva observación
+			if( observacion != null ) {
+				ResidenciasObservacion obObj = new ResidenciasObservacion(observacion);
+				obObj.setCodFResindecia(this); // Enlazamos con esta residencia
+				setObservacion(obObj);
+				HQLManager.insertObservacion(obObj);
+			}
+		}
+	}
+	
 	public Residencia(String nombre, int precio, boolean comedor, String observacion, Universidad universidad) {
 	
 		setNomResidencia(nombre);
 		setPrecioMensual(precio);
 		setComedor(comedor);
 		setUniversidad(universidad);
-		
+
 		ResidenciasObservacion obObj = null;
-		// Ahora necesitamos asociarla a una universidad y a una observación( si la hay )
-		if( observacion != null ) {
-			
+		// Ahora necesitamos asociarla a una observación
+		
+		if (observacion != null) {
+
 			obObj = new ResidenciasObservacion(observacion);
 			obObj.setCodFResindecia(this); // Enlazamos con esta residencia
 			setObservacion(obObj);
 		}
-		
+
 		// Primero insertamos la residencia y luego la observacion
 		HQLManager.insertResidencia(this);
-		
-		if( obObj != null )
+
+		if (obObj != null)
 			HQLManager.insertObservacion(obObj);
+			
 	}
 	
 	public final BooleanProperty comedorProperty() {
@@ -186,7 +211,7 @@ public class Residencia implements Externalizable {
 	}
 	
 
-	@OneToOne
+	@OneToOne(cascade= {CascadeType.PERSIST, CascadeType.REMOVE})
 	@PrimaryKeyJoinColumn
 	public final ResidenciasObservacion getObservacion() {
 		

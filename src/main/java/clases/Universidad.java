@@ -5,10 +5,24 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import utils.HQLManager;
+
 @Entity
 @Table(name="universidades")
 public class Universidad {
 
+	public Universidad() {
+		
+	}
+	
+	public Universidad(String codUniversidad, String nombreUniversidad) {
+		
+		setCodUniversidad(codUniversidad);
+		setNomUniversidad(nombreUniversidad);
+		
+		HQLManager.insertUniversidad(this);
+	}
+	
 	@Id
 	@Column(columnDefinition = "char(6)")
 	private String codUniversidad;
