@@ -3,7 +3,12 @@ package Main;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
 
+import clases.Estancia;
+import clases.Residencia;
+import clases.Universidad;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -15,6 +20,7 @@ import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 import ui.EstanciasController;
 import ui.ResidenciasController;
+import utils.HQLManager;
 
 public class App extends Application {
 
@@ -29,8 +35,41 @@ public class App extends Application {
 	
 	private Stage mainWindow;
 	
+	private static ArrayList<Residencia> residencias;
+	private static ArrayList<Universidad> universidades;
+	private static ArrayList<Estancia> estancias;
+	
+	public static ArrayList<Universidad> getUniversidades() {
+		return universidades;
+	}
+
+	public static void setUniversidades(ArrayList<Universidad> universidades) {
+		App.universidades = universidades;
+	}
+
+	public static ArrayList<Estancia> getEstancias() {
+		return estancias;
+	}
+
+	public static void setEstancias(ArrayList<Estancia> estancias) {
+		App.estancias = estancias;
+	}
+
+	public static ArrayList<Residencia> getResidencias() {
+		return residencias;
+	}
+
+	public static void setResidencias(ArrayList<Residencia> residencias) {
+		App.residencias = residencias;
+	}
+
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		// Cargamos los datos iniciales que se van a usar a lo largo de la App
+		setResidencias(new ArrayList<Residencia>(HQLManager.getResidencias()));
+		setUniversidades(new ArrayList<Universidad>(HQLManager.getUniversidades()));
+		setEstancias(new ArrayList<Estancia>(HQLManager.getEstancias()));
 		
 		try {
 			

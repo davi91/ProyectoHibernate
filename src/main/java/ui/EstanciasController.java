@@ -3,6 +3,8 @@ package ui;
 import java.io.IOException;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import Main.App;
@@ -12,14 +14,24 @@ import clases.Estudiante;
 import clases.Residencia;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.GridPane;
+import utils.HQLManager;
+import utils.InsertEstanciaDialog;
 
 public class EstanciasController implements Initializable {
 
+	// FXML : View
+	//-------------------------------------------------
+	
 	@FXML
 	private GridPane view;
 	
@@ -46,7 +58,12 @@ public class EstanciasController implements Initializable {
 
 	@FXML
 	private Button removeEstBt;
-	    
+	
+	//-------------------------------------------------
+	
+	// Model
+	private ListProperty<Estancia> estanciasList = new SimpleListProperty<>(FXCollections.observableArrayList(new ArrayList<>()));
+	
 	
 	// Necesitamos una referencia a la aplicación principal
 	private App myApp;
@@ -63,7 +80,9 @@ public class EstanciasController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-
+		estanciasList.setAll(App.getEstancias());
+		
+		estanciaTable.itemsProperty().bind(estanciasList);
 	}
 	
     @FXML
@@ -80,6 +99,16 @@ public class EstanciasController implements Initializable {
     @FXML
     void insertEstancia(ActionEvent event) {
 
+    	InsertEstanciaDialog dialog = new InsertEstanciaDialog();
+    	
+    	Optional<Estancia> estancia = dialog.showAndWait();
+    	
+    	if( estancia.isPresent() ) {
+    		Alert infoAlert = new Alert(AlertType.INFORMATION);
+    		infoAlert.setTitle("Éxito");
+    		infoAlert.setHeaderText("Estancia insertada con éxito");
+    		infoAlert.showAndWait();
+    	}
     }
 
     @FXML

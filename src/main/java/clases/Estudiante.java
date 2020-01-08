@@ -2,9 +2,12 @@ package clases;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import utils.HQLManager;
@@ -18,12 +21,24 @@ public class Estudiante {
 	}
 	
 
-	public Estudiante(String dni, String nomEstudiante, String telefonoEstudiante) {
+	// No puede haber un estudiante sin estancia
+	public Estudiante(String dni, String nomEstudiante, String telefonoEstudiante, Estancia estancia) {
 		setDni(dni);
 		setNomEstudiante(nomEstudiante);
 		setTelefonoEstudiante(telefonoEstudiante);
+		setEstancia(estancia);
 		
 		HQLManager.insertEstudiante(this);
+	}
+
+
+	public Estancia getEstancia() {
+		return estancia;
+	}
+
+
+	public void setEstancia(Estancia estancia) {
+		this.estancia = estancia;
 	}
 
 
@@ -37,6 +52,10 @@ public class Estudiante {
 	@Column(length = 50)
 	private String nomEstudiante;
 	
+    @ManyToOne
+    @JoinColumn(name = "codEstancia")
+    private Estancia estancia;
+    
 	@Column(length = 9)
 	private String telefonoEstudiante;
 

@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import Main.HibernateUtil;
+import clases.Estancia;
 import clases.Estudiante;
 import clases.Residencia;
 import clases.ResidenciasObservacion;
@@ -33,6 +34,26 @@ public class HQLManager {
 		session.close(); // Hemos terminado
 
 		return resis;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public static List<Estancia> getEstancias() {
+		
+		// Creamos la base de datos
+		Session session = HibernateUtil.getSessionFactory().openSession();
+
+		// Abrimos la transacción
+		Transaction transaction = session.beginTransaction();
+
+		Query query = session.createQuery("from Estancia");
+
+		List<Estancia> estancias = null;
+		estancias = query.getResultList();
+
+		transaction.commit(); // La cerramos
+		session.close(); // Hemos terminado
+
+		return estancias;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -133,6 +154,30 @@ public class HQLManager {
 
 		session.save(estudiante);
 
+		transaction.commit();
+		session.close();
+	}
+	
+	public static void insertarEstancia(Estancia estancia) {
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		Transaction transaction = session.beginTransaction();
+		
+		session.save(estancia);
+		
+		transaction.commit();
+		session.close();
+	}
+	
+	public static void actualizarEstancia(Estancia estancia) {
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		Transaction transaction = session.beginTransaction();
+		
+		session.update(estancia);
+		
 		transaction.commit();
 		session.close();
 	}

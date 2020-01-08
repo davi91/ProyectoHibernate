@@ -1,14 +1,19 @@
 package utils;
 
+import Main.App;
+import clases.Estancia;
 import clases.Estudiante;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.ObjectExpression;
 import javafx.beans.binding.StringExpression;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import ui.EstanciasController;
 
 public class InsertEstudianteDialog extends Dialog<Estudiante> {
 
@@ -17,13 +22,16 @@ public class InsertEstudianteDialog extends Dialog<Estudiante> {
 		private StringExpression dni;
 		private StringExpression nombre;
 		private StringExpression telefono;
+		private ObjectExpression<Estancia> estancia;
 		
-		
-		public EstudianteDialogValidation(StringExpression dni, StringExpression nombre, StringExpression telefono) {
+		public EstudianteDialogValidation(StringExpression dni, StringExpression nombre, StringExpression telefono,
+										  ObjectExpression<Estancia> estancia) {
 			this.dni = dni;
 			this.nombre = nombre;
 			this.telefono = telefono;
-			bind(dni, nombre, telefono);
+			this.estancia = estancia;
+			
+			bind(dni, nombre, telefono, estancia);
 		}
 
 
@@ -39,6 +47,10 @@ public class InsertEstudianteDialog extends Dialog<Estudiante> {
 			}
 			
 			if( dni.get().length() != 9 || telefono.get().length() != 9 ) {
+				return true;
+			}
+			
+			if( estancia.get() == null ) {
 				return true;
 			}
 			
@@ -70,6 +82,11 @@ public class InsertEstudianteDialog extends Dialog<Estudiante> {
 		tlfTxt.setPromptText("9 caracteres");
 		root.addRow(2,  tlfLbl, tlfTxt);
 		
+		Label estanciasLbl = new Label("Estancia");
+		ComboBox<Estancia> estanciaCb = new ComboBox<>();
+		estanciaCb.getItems().setAll(App.getEstancias());
+		root.addRow(3,  estanciasLbl, estanciaCb);
+		
 		ButtonType okButton = new ButtonType("Añadir estudiante", ButtonData.OK_DONE);
 		ButtonType cancelButton = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
 		
@@ -78,12 +95,13 @@ public class InsertEstudianteDialog extends Dialog<Estudiante> {
 		
 		getDialogPane().lookupButton(okButton).disableProperty().bind(
 				new EstudianteDialogValidation(dniTxt.textProperty(),
-						nomTxt.textProperty(), tlfTxt.textProperty()));
+						nomTxt.textProperty(), tlfTxt.textProperty(), estanciaCb.valueProperty()));
 		
 		setResultConverter( bt -> {
 			
 			if( bt == okButton ) {
-				return new Estudiante(dniTxt.getText(), nomTxt.getText(), tlfTxt.getText());
+				return new Estudiante(dniTxt.getText(), nomTxt.getText(), tlfTxt.getText(),
+									estanciaCb.getSelectionModel().getSelectedItem());
 			}
 			
 			return null;

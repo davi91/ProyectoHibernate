@@ -70,7 +70,7 @@ public class ResidenciasController implements Initializable {
     //---------------------------------------------
     
     private ListProperty<Residencia> residenciasList = new SimpleListProperty<>(FXCollections.observableArrayList(new ArrayList<>()));
-    public static ListProperty<Universidad> universidadesList = new SimpleListProperty<>(FXCollections.observableArrayList(new ArrayList<>()));
+    private ListProperty<Universidad> universidadesList = new SimpleListProperty<>(FXCollections.observableArrayList(new ArrayList<>()));
     
     // Necesitamos una referencia a nuestra aplicación principal
     private App myApp;
@@ -90,8 +90,8 @@ public class ResidenciasController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		// Obtenemos las universidades y las residencias de la base de datos
-		universidadesList.addAll(HQLManager.getUniversidades());
-		residenciasList.addAll(HQLManager.getResidencias());
+		universidadesList.setAll(App.getUniversidades());
+		residenciasList.setAll(App.getResidencias());
 		
 		// Queremos que el comedor sea un checkbox
 		comedorCol.setCellFactory(CheckBoxTableCell.forTableColumn(comedorCol));

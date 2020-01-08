@@ -1,5 +1,6 @@
 package utils;
 
+import Main.App;
 import clases.Residencia;
 import clases.Universidad;
 import javafx.scene.control.ButtonType;
@@ -115,7 +116,7 @@ public class InsertResiDialog extends Dialog<Residencia> {
 		
 		Label universidadLbl = new Label("Universidades:");
 		ComboBox<Universidad> universidades = new ComboBox<Universidad>();
-		universidades.itemsProperty().bind( ResidenciasController.universidadesList);
+		universidades.getItems().setAll(App.getUniversidades());
 		universidades.setPromptText("Seleccione universidad");
 		if( universidadObj != null ) {
 			universidades.getSelectionModel().select(universidadObj);

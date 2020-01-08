@@ -1,14 +1,20 @@
 package Main;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.util.ArrayList;
+
 import javax.persistence.Query;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import clases.Estancia;
+import clases.Estudiante;
 import clases.Residencia;
 import clases.ResidenciasObservacion;
 import clases.Universidad;
+import utils.HQLManager;
 
 public class Main {
 
@@ -18,6 +24,7 @@ public class Main {
 	//	Session session = HibernateUtil.getSessionFactory().openSession();
 		
 		// Abrimos la transacción
+		
 	//	Transaction transaction = session.beginTransaction();
 		
 		/*
@@ -44,7 +51,7 @@ public class Main {
 		
 		// Importamos la universidad
 
-//		transaction.commit();
+	//	transaction.commit();
 	//	session.close();
 		
 		// Ahora, una vez creada la base de datos, procedemos a la interfaz
