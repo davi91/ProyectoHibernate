@@ -21,8 +21,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.layout.GridPane;
 import utils.HQLManager;
 import utils.InsertEstanciaDialog;
@@ -83,6 +85,11 @@ public class EstanciasController implements Initializable {
 		estanciasList.setAll(App.getEstancias());
 		
 		estanciaTable.itemsProperty().bind(estanciasList);
+		
+		insertEstBt.disableProperty().bind(estanciaTable.getSelectionModel().selectedItemProperty().isNull());
+		modEstBt.disableProperty().bind(estanciaTable.getSelectionModel().selectedItemProperty().isNull());
+		removeEstBt.disableProperty().bind(estanciaTable.getSelectionModel().selectedItemProperty().isNull());
+
 	}
 	
     @FXML
@@ -103,7 +110,11 @@ public class EstanciasController implements Initializable {
     	
     	Optional<Estancia> estancia = dialog.showAndWait();
     	
-    	if( estancia.isPresent() ) {
+    	if( estancia.isPresent() && estancia.get() != null ) {
+    		
+    		estanciasList.add(estancia.get());
+    		myApp.getEstancias().add(estancia.get());
+    		
     		Alert infoAlert = new Alert(AlertType.INFORMATION);
     		infoAlert.setTitle("Éxito");
     		infoAlert.setHeaderText("Estancia insertada con éxito");
@@ -113,17 +124,52 @@ public class EstanciasController implements Initializable {
 
     @FXML
     void insertTables(ActionEvent event) {
-
+    	myApp.insertTables();
     }
 
     @FXML
     void removeEstancia(ActionEvent event) {
 
+		ButtonType yesBt = new ButtonType("Si", ButtonData.OK_DONE);
+		ButtonType noBt = new ButtonType("No", ButtonData.CANCEL_CLOSE);
+		
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.getDialogPane().getButtonTypes().clear();
+		alert.getDialogPane().getButtonTypes().addAll(yesBt, noBt);
+		alert.initOwner(getRootView().getScene().getWindow());
+		
+		alert.setTitle("Confirmacion");
+		alert.setHeaderText("Eliminar estancia");
+		alert.setContentText("Se eliminarán los estudiantes asociados");
+		alert.setContentText("¿Está seguro de eliminar esta estancia?");
+		
+		Optional<ButtonType> response = alert.showAndWait();
+		
+		if( response.isPresent() && response.get() == yesBt) {
+			
+			Estancia estancia = estanciaTable.getSelectionModel().getSelectedItem();
+			
+			if( estancia != null ) {
+				HQLManager.eliminarEstancia(estancia);
+			}
+			HQLManager.eliminarEstancia(estancia);
+		}
     }
 
     @FXML
     void updateEstancia(ActionEvent event) {
 
+    	InsertEstanciaDialog dialog = new InsertEstanciaDialog(estanciaTable.getSelectionModel().getSelectedItem());
+    	
+    	Optional<Estancia> estancia = dialog.showAndWait();
+    	
+    	if( estancia.isPresent() ) {
+    		Alert infoAlert = new Alert(AlertType.INFORMATION);
+    		infoAlert.setTitle("Éxito");
+    		infoAlert.setHeaderText("Estancia actualizada con éxito");
+    		infoAlert.showAndWait();
+    	}
+    	
     }
     
     public GridPane getRootView() {

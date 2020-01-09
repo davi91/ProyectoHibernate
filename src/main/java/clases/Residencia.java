@@ -177,7 +177,7 @@ public class Residencia implements Externalizable {
 	}
 	
 
-	@ManyToOne(fetch = FetchType.EAGER) // Me interesa obtener la universidad asociada, puesto que la necesitamos en la tabla
+	@ManyToOne(fetch = FetchType.LAZY) // Me interesa obtener la universidad asociada, puesto que la necesitamos en la tabla
 	@JoinColumn(name="codUniversidad")
 	public final Universidad getUniversidad() {
 		

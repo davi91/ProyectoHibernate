@@ -187,57 +187,9 @@ public class ResidenciasController implements Initializable {
 	}
 
 	private void insertTables() {
-		
-		Alert alert = new Alert(AlertType.CONFIRMATION);
-		alert.setTitle("Insercciones");
-		alert.setHeaderText("¿Qué desea insertar?");
-		
-		ButtonType universidadBt = new ButtonType("Universidad");
-		ButtonType estudiantesBt = new ButtonType("Estudiantes");
-		ButtonType cancelBt = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
-		
-		alert.getButtonTypes().setAll(universidadBt, estudiantesBt, cancelBt);
-		alert.initOwner(getRootView().getScene().getWindow());
-		Optional<ButtonType> selection = alert.showAndWait();
-		
-		if( selection.isPresent() ) {
-			
-			if( selection.get().equals(universidadBt) ) {
-				
-				InsertUniversidadDialog dialog = new InsertUniversidadDialog();
-				dialog.initOwner(getRootView().getScene().getWindow());
-				Optional<Universidad> universidad = dialog.showAndWait();
-
-				if (universidad.isPresent()) {
-
-					Alert infoAlert = new Alert(AlertType.INFORMATION);
-					infoAlert.setTitle("Listo");
-					infoAlert.initOwner(getRootView().getScene().getWindow());
-					infoAlert.setContentText("Universidad insertada");
-
-					infoAlert.showAndWait();
-
-					// Añadimos la universidad a la lista
-					universidadesList.add(universidad.get());
-				}
-				
-			} else if( selection.get().equals(estudiantesBt) ) {
-				
-				InsertEstudianteDialog dialog = new InsertEstudianteDialog();
-				
-				Optional<Estudiante> estudiante = dialog.showAndWait();
-				
-				if( estudiante.isPresent() ) {
-					
-					Alert infoAlert = new Alert(AlertType.INFORMATION);
-					infoAlert.setTitle("Listo");
-					infoAlert.initOwner(getRootView().getScene().getWindow());
-					infoAlert.setContentText("Estudiante insertado");
-
-					infoAlert.showAndWait();
-				}
-			}
-		}
+		// Actualizamos las universidades
+		universidadesList.setAll(App.getUniversidades());
+		myApp.insertTables();
 	}
 	
 	public GridPane getRootView() {

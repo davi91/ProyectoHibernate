@@ -72,11 +72,20 @@ public class InsertEstanciaDialog extends Dialog<Estancia>{
 	
 	private final static LocalDate OURDATE = LocalDate.now();
 	
+	private Estancia estanciaToUpdate;
+	
 	/**
 	 * Insertamos una nueva estancia
 	 */
 	public InsertEstanciaDialog() {
 		this(false, null, null, 0, null);
+	}
+	
+	public InsertEstanciaDialog(Estancia estancia) {
+		this(true, estancia.getFechaInicio(), estancia.getFechaFin(),
+				estancia.getPrecioPagado(), estancia.getCodResidencia());
+		
+		this.estanciaToUpdate = estancia;
 	}
 	
 	public InsertEstanciaDialog(boolean bUpdate, Date fInicio, Date fFin, int precio, Residencia residencia) {
@@ -141,9 +150,15 @@ public class InsertEstanciaDialog extends Dialog<Estancia>{
 		setResultConverter( bt -> {
 			
 			if( bt == okButton ) {
-				// Aunque la actualización no la añade a la base de datos, es para devolver un objeto
-				return new Estancia(bUpdate, residencias.getSelectionModel().getSelectedItem(),
+				
+				if( bUpdate ) {
+					return new Estancia(bUpdate, residencias.getSelectionModel().getSelectedItem(),
 						Date.valueOf(fInicioDate.getValue()), Date.valueOf(fFinDate.getValue()), Integer.parseInt(precioText.getText()));
+				}
+				
+				else {
+					return estanciaToUpdate;
+				}
 			}
 			
 			return null;

@@ -5,14 +5,18 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import clases.Estancia;
+import clases.Estudiante;
 import clases.Residencia;
 import clases.Universidad;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
@@ -21,6 +25,8 @@ import javafx.stage.Stage;
 import ui.EstanciasController;
 import ui.ResidenciasController;
 import utils.HQLManager;
+import utils.InsertEstudianteDialog;
+import utils.InsertUniversidadDialog;
 
 public class App extends Application {
 
@@ -144,6 +150,59 @@ public class App extends Application {
 			break;
 		}
 		
+	}
+	
+	public void insertTables() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Insercciones");
+		alert.setHeaderText("¿Qué desea insertar?");
+		
+		ButtonType universidadBt = new ButtonType("Universidad");
+		ButtonType estudiantesBt = new ButtonType("Estudiantes");
+		ButtonType cancelBt = new ButtonType("Cancel", ButtonData.CANCEL_CLOSE);
+		
+		alert.getButtonTypes().setAll(universidadBt, estudiantesBt, cancelBt);
+		alert.initOwner(mainWindow);
+		Optional<ButtonType> selection = alert.showAndWait();
+		
+		if( selection.isPresent() ) {
+			
+			if( selection.get().equals(universidadBt) ) {
+				
+				InsertUniversidadDialog dialog = new InsertUniversidadDialog();
+				dialog.initOwner(mainWindow);
+				Optional<Universidad> universidad = dialog.showAndWait();
+
+				if (universidad.isPresent()) {
+
+					Alert infoAlert = new Alert(AlertType.INFORMATION);
+					infoAlert.setTitle("Listo");
+					infoAlert.initOwner(mainWindow);
+					infoAlert.setContentText("Universidad insertada");
+
+					infoAlert.showAndWait();
+
+					// Añadimos la universidad a la lista
+					getUniversidades().add(universidad.get());
+				}
+				
+			} else if( selection.get().equals(estudiantesBt) ) {
+				
+				InsertEstudianteDialog dialog = new InsertEstudianteDialog();
+				
+				Optional<Estudiante> estudiante = dialog.showAndWait();
+				
+				if( estudiante.isPresent() ) {
+					
+					Alert infoAlert = new Alert(AlertType.INFORMATION);
+					infoAlert.setTitle("Listo");
+					infoAlert.initOwner(mainWindow);
+					infoAlert.setContentText("Estudiante insertado");
+
+					infoAlert.showAndWait();
+				}
+			}
+		}
 	}
 
 }

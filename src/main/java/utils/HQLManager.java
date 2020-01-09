@@ -181,4 +181,16 @@ public class HQLManager {
 		transaction.commit();
 		session.close();
 	}
+	
+	public static void eliminarEstancia(Estancia estancia) {
+		
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		
+		Transaction transasction = session.beginTransaction();
+		
+		session.remove(estancia);
+		
+		transasction.commit();
+		session.close();
+	}
 }

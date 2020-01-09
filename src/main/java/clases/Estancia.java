@@ -262,6 +262,12 @@ public class Estancia implements Externalizable {
 	}
 
 	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return String.format("%s a %s, %s",getFechaInicio().toString(), getFechaFin().toString(), getCodResidencia().toString());
+	}
+	
+	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
 		
 		out.writeInt(getCodEstancia());
