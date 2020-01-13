@@ -177,7 +177,7 @@ public class Residencia implements Externalizable {
 	}
 	
 
-	@ManyToOne(fetch = FetchType.LAZY) // Me interesa obtener la universidad asociada, puesto que la necesitamos en la tabla
+	@ManyToOne(fetch = FetchType.EAGER) // Con JavaFX, necesitamos que sea EAGER, si no no la puede cargar
 	@JoinColumn(name="codUniversidad")
 	public final Universidad getUniversidad() {
 		
@@ -303,6 +303,11 @@ public class Residencia implements Externalizable {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return getNomResidencia();
+	}
+	
 	@Override
 	public void writeExternal(ObjectOutput out) throws IOException {
 		

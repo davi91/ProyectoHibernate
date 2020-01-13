@@ -58,7 +58,7 @@ public class InsertEstudianteDialog extends Dialog<Estudiante> {
 		}
 		
 	}
-	public InsertEstudianteDialog() {
+	public InsertEstudianteDialog(App myApp) {
 		
 		setTitle("Insertar estudiante");
 		setHeaderText("Insertar nuevo estudiante");
@@ -84,7 +84,7 @@ public class InsertEstudianteDialog extends Dialog<Estudiante> {
 		
 		Label estanciasLbl = new Label("Estancia");
 		ComboBox<Estancia> estanciaCb = new ComboBox<>();
-		estanciaCb.getItems().setAll(App.getEstancias());
+		estanciaCb.getItems().setAll(myApp.getEstancias());
 		root.addRow(3,  estanciasLbl, estanciaCb);
 		
 		ButtonType okButton = new ButtonType("Añadir estudiante", ButtonData.OK_DONE);

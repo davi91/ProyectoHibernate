@@ -90,8 +90,8 @@ public class ResidenciasController implements Initializable {
 	public void initialize(URL location, ResourceBundle resources) {
 		
 		// Obtenemos las universidades y las residencias de la base de datos
-		universidadesList.setAll(App.getUniversidades());
-		residenciasList.setAll(App.getResidencias());
+		universidadesList.setAll(myApp.getUniversidades());
+		residenciasList.setAll(myApp.getResidencias());
 		
 		// Queremos que el comedor sea un checkbox
 		comedorCol.setCellFactory(CheckBoxTableCell.forTableColumn(comedorCol));
@@ -128,7 +128,7 @@ public class ResidenciasController implements Initializable {
 		if( resi != null ) {
 			
 			String lastObs = (resi.getObservacion() != null ) ? resi.getObservacion().getObservaciones() : null;
-			InsertResiDialog dialog = new InsertResiDialog(resi);
+			InsertResiDialog dialog = new InsertResiDialog(resi, myApp);
 			dialog.initOwner(getRootView().getScene().getWindow());
 			Optional<Residencia> myResi = dialog.showAndWait();
 			
@@ -171,24 +171,26 @@ public class ResidenciasController implements Initializable {
 			if( resi != null ) {
 				residenciasList.remove(resi);
 				HQLManager.removeResidencia(resi);
+				myApp.getResidencias().remove(resi);
 			}
 		}
 	}
 
 	private void onInsertResidencia() {
 		
-		InsertResiDialog dialog = new InsertResiDialog();
+		InsertResiDialog dialog = new InsertResiDialog(myApp);
 		dialog.initOwner(getRootView().getScene().getWindow());
 		Optional<Residencia> resi = dialog.showAndWait();
 		
 		if( resi.isPresent() ) {
 			residenciasList.add(resi.get());
+			myApp.getResidencias().add(resi.get());
 		}
 	}
 
 	private void insertTables() {
 		// Actualizamos las universidades
-		universidadesList.setAll(App.getUniversidades());
+		universidadesList.setAll(myApp.getUniversidades());
 		myApp.insertTables();
 	}
 	

@@ -54,9 +54,23 @@ public class Estancia implements Externalizable {
 	private int _precioPagado;
 	private IntegerProperty precioPagado;
 	
+	public Estancia() {
+		
+	}
 	
+	public void updateEstancia( Residencia residencia, Date fechaInicio,
+					Date fechaFin, int precioPagado) {
+		
+		setCodResidencia(residencia);
+		setFechaInicio(fechaInicio);
+		setFechaFin(fechaFin);
+		setPrecioPagado(precioPagado);
+		
+		HQLManager.actualizarEstancia(this);
+		
+	}
 	
-	public Estancia(boolean bUpdate, Residencia residencia, Date fechaInicio,
+	public Estancia(Residencia residencia, Date fechaInicio,
 					Date fechaFin, int precioPagado) {
 		
 		setCodResidencia(residencia);
@@ -65,11 +79,7 @@ public class Estancia implements Externalizable {
 		setPrecioPagado(precioPagado);
 		
 		// Ahora creamos el objeto en la base de datos
-		
-		if( !bUpdate )
-			HQLManager.insertarEstancia(this);
-		else 
-			HQLManager.actualizarEstancia(this);
+		HQLManager.insertarEstancia(this);
 		
 	}
 

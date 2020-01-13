@@ -76,23 +76,23 @@ public class InsertResiDialog extends Dialog<Residencia> {
 	/**
 	 * Por defecto se inserta una nueva residencia, no se actualiza
 	 */
-	public InsertResiDialog() {
-		this(false, null, null, "0", false, null);
+	public InsertResiDialog(App myApp) {
+		this(false, null, null, "0", false, null, myApp);
 	}
 	
 	/**
 	 * Actualización de una residencia
 	 * @param toUpdate Reisdencia a actualizar
 	 */
-	public InsertResiDialog(Residencia toUpdate) {
+	public InsertResiDialog(Residencia toUpdate, App myApp) {
 		this(true, toUpdate.getNomResidencia(), toUpdate.getUniversidad(),
 				   String.valueOf(toUpdate.getPrecioMensual()), toUpdate.getComedor(), 
-				   toUpdate.getObservacion() != null ? toUpdate.getObservacion().toString() : null);
+				   toUpdate.getObservacion() != null ? toUpdate.getObservacion().toString() : null, myApp);
 		
 		this.resiToUpdate = toUpdate;
 	}
 	
-	public InsertResiDialog(boolean bUpdate, String nombreResi, Universidad universidadObj, String precioResi, boolean comedorResi, String observacionTxt) {
+	public InsertResiDialog(boolean bUpdate, String nombreResi, Universidad universidadObj, String precioResi, boolean comedorResi, String observacionTxt, App myApp) {
 		
 		if( !bUpdate ) {
 			setTitle(insertTtitle);
@@ -116,7 +116,7 @@ public class InsertResiDialog extends Dialog<Residencia> {
 		
 		Label universidadLbl = new Label("Universidades:");
 		ComboBox<Universidad> universidades = new ComboBox<Universidad>();
-		universidades.getItems().setAll(App.getUniversidades());
+		universidades.getItems().setAll(myApp.getUniversidades());
 		universidades.setPromptText("Seleccione universidad");
 		if( universidadObj != null ) {
 			universidades.getSelectionModel().select(universidadObj);

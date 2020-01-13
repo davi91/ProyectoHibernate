@@ -77,18 +77,18 @@ public class InsertEstanciaDialog extends Dialog<Estancia>{
 	/**
 	 * Insertamos una nueva estancia
 	 */
-	public InsertEstanciaDialog() {
-		this(false, null, null, 0, null);
+	public InsertEstanciaDialog(App myApp) {
+		this(false, null, null, 0, null, myApp);
 	}
 	
-	public InsertEstanciaDialog(Estancia estancia) {
+	public InsertEstanciaDialog(Estancia estancia, App myApp) {
 		this(true, estancia.getFechaInicio(), estancia.getFechaFin(),
-				estancia.getPrecioPagado(), estancia.getCodResidencia());
+				estancia.getPrecioPagado(), estancia.getCodResidencia(), myApp);
 		
 		this.estanciaToUpdate = estancia;
 	}
 	
-	public InsertEstanciaDialog(boolean bUpdate, Date fInicio, Date fFin, int precio, Residencia residencia) {
+	public InsertEstanciaDialog(boolean bUpdate, Date fInicio, Date fFin, int precio, Residencia residencia, App myApp) {
 		
 		if( !bUpdate ) {
 			setTitle(I_TITLE);
@@ -126,7 +126,7 @@ public class InsertEstanciaDialog extends Dialog<Estancia>{
 		GridPane.setHgrow(resiLabel, Priority.ALWAYS);
 		
 		ListView<Residencia> residencias = new ListView<>();
-		residencias.getItems().setAll(App.getResidencias());
+		residencias.getItems().setAll(myApp.getResidencias());
 		root.addRow(4, residencias);
 		GridPane.setColumnSpan(residencias, 2);
 		residencias.setPrefHeight(128.f);
@@ -139,7 +139,7 @@ public class InsertEstanciaDialog extends Dialog<Estancia>{
 		
 		getDialogPane().setContent(root);
 		
-		ButtonType okButton = new ButtonType(bUpdate ? "Insertar" : "Actualizar", ButtonData.OK_DONE);
+		ButtonType okButton = new ButtonType(!bUpdate ? "Insertar" : "Actualizar", ButtonData.OK_DONE);
 		ButtonType cancelButton = new ButtonType("Cancelar", ButtonData.CANCEL_CLOSE);
 		
 		getDialogPane().getButtonTypes().addAll(okButton, cancelButton);
@@ -151,12 +151,15 @@ public class InsertEstanciaDialog extends Dialog<Estancia>{
 			
 			if( bt == okButton ) {
 				
-				if( bUpdate ) {
-					return new Estancia(bUpdate, residencias.getSelectionModel().getSelectedItem(),
+				if( !bUpdate ) {
+					return new Estancia(residencias.getSelectionModel().getSelectedItem(),
 						Date.valueOf(fInicioDate.getValue()), Date.valueOf(fFinDate.getValue()), Integer.parseInt(precioText.getText()));
 				}
 				
 				else {
+					estanciaToUpdate.updateEstancia(residencias.getSelectionModel().getSelectedItem(), 
+							Date.valueOf(fInicioDate.getValue()), Date.valueOf(fFinDate.getValue()), Integer.parseInt(precioText.getText()));
+					
 					return estanciaToUpdate;
 				}
 			}

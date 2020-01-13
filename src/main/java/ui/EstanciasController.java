@@ -15,7 +15,9 @@ import clases.Residencia;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.beans.property.ListProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -66,7 +68,6 @@ public class EstanciasController implements Initializable {
 	// Model
 	private ListProperty<Estancia> estanciasList = new SimpleListProperty<>(FXCollections.observableArrayList(new ArrayList<>()));
 	
-	
 	// Necesitamos una referencia a la aplicación principal
 	private App myApp;
 	
@@ -82,17 +83,28 @@ public class EstanciasController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 		
-		estanciasList.setAll(App.getEstancias());
+		estanciasList.setAll(myApp.getEstancias());
 		
 		estanciaTable.itemsProperty().bind(estanciasList);
 		
-		insertEstBt.disableProperty().bind(estanciaTable.getSelectionModel().selectedItemProperty().isNull());
 		modEstBt.disableProperty().bind(estanciaTable.getSelectionModel().selectedItemProperty().isNull());
 		removeEstBt.disableProperty().bind(estanciaTable.getSelectionModel().selectedItemProperty().isNull());
+		
+		estanciaTable.getSelectionModel().selectedItemProperty().addListener( (o, ov, nv ) -> onEstanciaChanged(nv));
 
 	}
 	
-    @FXML
+    private void onEstanciaChanged(Estancia nv) {
+    	
+    	resiTable.getItems().clear();
+    	
+    	// Sólo va a tener un dato
+    	if( nv != null) {
+    		resiTable.getItems().add(nv.getCodResidencia());
+    	} 
+	}
+
+	@FXML
     void goResidencia(ActionEvent event) {
 
 		// Cambiamos de situación, ahora mostramos las residencias
@@ -106,7 +118,7 @@ public class EstanciasController implements Initializable {
     @FXML
     void insertEstancia(ActionEvent event) {
 
-    	InsertEstanciaDialog dialog = new InsertEstanciaDialog();
+    	InsertEstanciaDialog dialog = new InsertEstanciaDialog(myApp);
     	
     	Optional<Estancia> estancia = dialog.showAndWait();
     	
@@ -151,15 +163,16 @@ public class EstanciasController implements Initializable {
 			
 			if( estancia != null ) {
 				HQLManager.eliminarEstancia(estancia);
-			}
-			HQLManager.eliminarEstancia(estancia);
+				estanciasList.remove(estancia);
+				myApp.getEstancias().remove(estancia);
+			}		
 		}
     }
 
     @FXML
     void updateEstancia(ActionEvent event) {
 
-    	InsertEstanciaDialog dialog = new InsertEstanciaDialog(estanciaTable.getSelectionModel().getSelectedItem());
+    	InsertEstanciaDialog dialog = new InsertEstanciaDialog(estanciaTable.getSelectionModel().getSelectedItem(), myApp);
     	
     	Optional<Estancia> estancia = dialog.showAndWait();
     	

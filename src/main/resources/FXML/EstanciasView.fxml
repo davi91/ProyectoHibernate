@@ -9,6 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <GridPane fx:id="view" hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" vgap="10.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <rowConstraints>
@@ -24,8 +25,16 @@
    <children>
       <TableView fx:id="resiTable" prefHeight="50.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" GridPane.valignment="TOP" GridPane.vgrow="NEVER">
         <columns>
-          <TableColumn prefWidth="75.0" text="Precio residencia" />
-          <TableColumn prefWidth="75.0" text="Universidad residencia" />
+          <TableColumn prefWidth="75.0" text="Precio residencia" >
+                 <cellValueFactory>
+					<PropertyValueFactory property="precioMensual" />
+				</cellValueFactory>
+          </TableColumn>
+          <TableColumn prefWidth="75.0" text="Universidad residencia" >
+                <cellValueFactory>
+					<PropertyValueFactory property="universidad" />
+				</cellValueFactory>
+		 </TableColumn>
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -42,12 +51,26 @@
       </TableView>
       <TableView fx:id="estanciaTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="2147483647" GridPane.rowIndex="2">
         <columns>
-          <TableColumn prefWidth="75.0" text="Nombre estancia" />
-          <TableColumn prefWidth="75.0" text="Inicio" />
-            <TableColumn prefWidth="75.0" text="Fin" />
-            <TableColumn prefWidth="75.0" text="Estudiante" />
-            <TableColumn prefWidth="75.0" text="Residencia" />
-            <TableColumn prefWidth="75.0" text="P. pagado" />
+          <TableColumn prefWidth="75.0" text="Inicio" >
+                <cellValueFactory>
+					<PropertyValueFactory property="fechaInicio" />
+				</cellValueFactory>
+          </TableColumn>
+            <TableColumn prefWidth="75.0" text="Fin" >
+                 <cellValueFactory>
+					<PropertyValueFactory property="fechaFin" />
+				</cellValueFactory>
+            </TableColumn>
+            <TableColumn prefWidth="75.0" text="Residencia" >
+                 <cellValueFactory>
+					<PropertyValueFactory property="codResidencia" />
+				</cellValueFactory>
+			</TableColumn>
+            <TableColumn prefWidth="75.0" text="P. pagado" >
+                <cellValueFactory>
+					<PropertyValueFactory property="precioPagado" />
+				</cellValueFactory>
+			</TableColumn>
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
