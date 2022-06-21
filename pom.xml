@@ -27,7 +27,7 @@ Creación de base de datos usando Hibernate con Java</description>
 		<dependency>
 		    <groupId>mysql</groupId>
 		    <artifactId>mysql-connector-java</artifactId>
-		    <version>8.0.18</version>
+		    <version>8.0.28</version>
 		</dependency>
 		
 	<!-- JAXB -->
